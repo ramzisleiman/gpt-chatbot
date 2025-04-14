@@ -34,8 +34,7 @@ export default function Home() {
         ...newMessages,
         { role: 'assistant', content: '⚠️ Something went wrong' }
       ]);
-    }
-    
+    };
 
     setLoading(false);
   };
