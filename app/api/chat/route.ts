@@ -1,27 +1,22 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function POST(req: Request) {
-  try {
-    const { message } = await req.json();
+export async function POST(req: NextRequest) {
+  const { message }: { message: string } = await req.json();
 
+  try {
     const chatResponse = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: message }],
     });
 
-    return NextResponse.json({
-      response: chatResponse.choices[0].message.content,
-    });
-  } catch (error: any) {
-    console.error('❌ API Error:', error);
-    return NextResponse.json(
-      { response: 'Something went wrong. Check the server logs.' },
-      { status: 500 }
-    );
-  }
-}
+    const response = chatResponse.choices[0].message.content;
+
+    return NextResponse.json({ response });
+  } catch (error) {
+    console.error('API error:', error);
+    return NextResponse.json({ response:
