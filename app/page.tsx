@@ -1,9 +1,14 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 
+type ChatMessage = {
+  role: 'user' | 'assistant';
+  content: string;
+};
+
 export default function Home() {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -11,7 +16,7 @@ export default function Home() {
     if (!message.trim()) return;
     setLoading(true);
 
-    const newMessages = [...messages, { role: 'user' as 'user', content: message }];
+    const newMessages: ChatMessage[] = [...messages, { role: 'user', content: message }];
     setMessages(newMessages);
     setMessage('');
 
@@ -21,17 +26,10 @@ export default function Home() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message }),
       });
-
       const data = await res.json();
-      setMessages([
-        ...newMessages,
-        { role: 'assistant' as 'assistant', content: String(data.response) },
-      ]);
+      setMessages([...newMessages, { role: 'assistant', content: String(data.response) }]);
     } catch (err) {
-      setMessages([
-        ...newMessages,
-        { role: 'assistant' as 'assistant', content: '⚠️ Something went wrong' },
-      ]);
+      setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
     }
 
     setLoading(false);
