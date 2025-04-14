@@ -1,14 +1,9 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 
-type ChatMessage = {
-  role: 'user' | 'assistant';
-  content: string;
-};
-
 export default function Home() {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; content: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -16,7 +11,7 @@ export default function Home() {
     if (!message.trim()) return;
     setLoading(true);
 
-    const newMessages: ChatMessage[] = [...messages, { role: 'user', content: message }];
+    const newMessages = [...messages, { role: 'user', content: message }];
     setMessages(newMessages);
     setMessage('');
 
@@ -29,12 +24,9 @@ export default function Home() {
 
       const data = await res.json();
       setMessages([...newMessages, { role: 'assistant', content: String(data.response) }]);
-    } } catch (error) {
-      console.error(error);
-    
-        setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
-      }
-      
+    } catch (error) {
+      setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
+    }
 
     setLoading(false);
   };
@@ -62,7 +54,7 @@ export default function Home() {
             {msg.content}
           </div>
         ))}
-        <div ref={bottomRef} />
+        <div ref={bottomRef}></div>
       </main>
 
       <footer className="p-4 bg-white shadow flex gap-2">
