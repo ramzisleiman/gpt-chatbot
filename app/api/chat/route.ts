@@ -15,8 +15,9 @@ export async function POST(req: NextRequest) {
     });
 
     const response = chatResponse.choices[0].message.content;
-
     return NextResponse.json({ response });
   } catch (error) {
     console.error('API error:', error);
-    return NextResponse.json({ response:
+    return NextResponse.json({ response: '⚠️ API call failed' }, { status: 500 });
+  }
+}
