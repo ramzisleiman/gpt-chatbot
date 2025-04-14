@@ -30,7 +30,8 @@ export default function Home() {
       const data = await res.json();
       setMessages([...newMessages, { role: 'assistant', content: String(data.response) }]);
     } } catch (error) {
-        console.error('sendMessage error:', error);
+      console.error(error);
+    
         setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
       }
       
