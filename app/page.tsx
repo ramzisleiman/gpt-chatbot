@@ -29,9 +29,11 @@ export default function Home() {
 
       const data = await res.json();
       setMessages([...newMessages, { role: 'assistant', content: String(data.response) }]);
-    } catch (error) {
-      setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
-    }
+    } } catch (error) {
+        console.error('sendMessage error:', error);
+        setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
+      }
+      
 
     setLoading(false);
   };
