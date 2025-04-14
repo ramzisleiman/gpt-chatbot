@@ -24,7 +24,8 @@ export default function Home() {
 
       const data = await res.json();
       setMessages([...newMessages, { role: 'assistant', content: String(data.response) }]);
-    } catch (error) {
+    } catch {
+
       setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
     }
 
