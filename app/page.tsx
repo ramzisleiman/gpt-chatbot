@@ -28,11 +28,14 @@ export default function Home() {
       });
       const data = await res.json();
       setMessages([...newMessages, { role: 'assistant', content: String(data.response) }]);
-      try {
-  
-      } catch (_) {
-        
-      }
+    } catch (err) {
+      console.error(err);
+      setMessages([
+        ...newMessages,
+        { role: 'assistant', content: '⚠️ Something went wrong' }
+      ]);
+    }
+    
 
     setLoading(false);
   };
