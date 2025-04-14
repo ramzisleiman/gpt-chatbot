@@ -11,7 +11,7 @@ export default function Home() {
     if (!message.trim()) return;
     setLoading(true);
 
-    const newMessages = [...messages, { role: 'user', content: message }];
+    const newMessages = [...messages, { role: 'user' as 'user', content: message }];
     setMessages(newMessages);
     setMessage('');
 
@@ -23,10 +23,15 @@ export default function Home() {
       });
 
       const data = await res.json();
-      setMessages([...newMessages, { role: 'assistant', content: String(data.response) }]);
-    } catch {
-
-      setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
+      setMessages([
+        ...newMessages,
+        { role: 'assistant' as 'assistant', content: String(data.response) },
+      ]);
+    } catch (err) {
+      setMessages([
+        ...newMessages,
+        { role: 'assistant' as 'assistant', content: '⚠️ Something went wrong' },
+      ]);
     }
 
     setLoading(false);
