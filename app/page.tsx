@@ -24,10 +24,9 @@ export default function Home() {
 
       const data = await res.json();
       setMessages([...newMessages, { role: 'assistant', content: data.response }]);
-    } } catch {
-        setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
-      }
-      
+    } catch {
+      setMessages([...newMessages, { role: 'assistant', content: '⚠️ Something went wrong' }]);
+    }
 
     setLoading(false);
   };
